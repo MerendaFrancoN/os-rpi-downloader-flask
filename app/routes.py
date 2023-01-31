@@ -8,36 +8,42 @@ from .tasks import download_file_with_progress
 
 
 def index():
-    return render_template_string('''\
+    return render_template_string(
+        """\
 <a href="{{ url_for('.enqueue') }}">launch job</a>
-''')
-
+"""
+    )
 
 
 def progress():
-    jobid = request.values.get('jobid')
+    jobid = request.values.get("jobid")
     if jobid:
         # GOTCHA: if you don't pass app=celery here,
         # you get "NotImplementedError: No result backend configured"
         job = AsyncResult(jobid, app=celery_app)
-        if job.state == 'PROGRESS':
-            return json.dumps(dict(
-                state=job.state,
-                progress=job.result['current'] * 1.0 / job.result['total'],
-            ))
-        elif job.state == 'SUCCESS':
-            return json.dumps(dict(
-                state=job.state,
-                progress=1.0,
-            ))
-    return '{}'
+        if job.state == "PROGRESS":
+            return json.dumps(
+                dict(
+                    state=job.state,
+                    progress=job.result["current"] * 1.0 / job.result["total"],
+                )
+            )
+        elif job.state == "SUCCESS":
+            return json.dumps(
+                dict(
+                    state=job.state,
+                    progress=1.0,
+                )
+            )
+    return "{}"
 
 
 def enqueue():
     job = download_file_with_progress.delay(
-        url='http://research.nhm.org/pdfs/4889/4889-001.pdf'
+        url="http://research.nhm.org/pdfs/4889/4889-001.pdf"
     )
-    return render_template_string('''\
+    return render_template_string(
+        """\
 <style>
 #prog {
 width: 400px;
@@ -78,4 +84,13 @@ $(function() {
     poll();
 });
 </script>
-''', JOBID=job.id)
+""",
+        JOBID=job.id,
+    )
+
+
+def enqueue_iso_download():
+    job = download_file_with_progress.delay(
+        url="http://research.nhm.org/pdfs/4889/4889-001.pdf",
+    )
+    return {"job_id": job.id}

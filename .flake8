@@ -1,0 +1,44 @@
+[flake8]
+ignore = E203, E266, E501, W503, F403, F401
+# Commonly ignored:
+# E203: Whitespace before ":". Black is doing it right, it's wrong on flake8
+# W503: Deprecated line breaking format
+# E501: Line too long. We should aim to not ignore this, since black formats to 88.
+#       Black is not reformatting too long strings, that's why it isn't done yet.
+# F403: Don't use import *. (Not ignoring this error, use # noqa for specific)
+# F401: Module imported but not used. (Not ignoring this error, use # noqa for specific)
+
+per-file-ignores =
+    # imported but unused
+    __init__.py: F401
+
+exclude =
+    .git,
+    .coverage,
+    .DS_Store,
+    .testmondata,
+    .vscode,
+    .idea,
+    .ve*,
+    .~lock.*,
+    *.pyc,
+    *.swo,
+    __pycache__,
+    __MACOSX,
+    htmlcov,
+    client,
+    docs,
+    node_modules,
+    dashboard,
+    temp,
+    ls_tmp,
+    scratch,
+    mocker,
+    prof,
+    virtualenv
+
+# We should aim to lower this by at least 88 which is the black default
+max-line-length = 88
+
+# We should aim to lower this to 20 at least, ref: https://www.guru99.com/cyclomatic-complexity.html
+max-complexity = 48

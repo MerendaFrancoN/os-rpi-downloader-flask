@@ -1,0 +1,56 @@
+[
+  {
+    "os": "Windows",
+    "name": "Multiversion",
+    "version": "10",
+    "aarch": "x64",
+    "url": "https://software.download.prss.microsoft.com/dbazure/Win10_22H2_English_x64.iso?t=1cd7940a-3c65-412f-94ac-7d6cbab679d9&e=1676086997&h=c18770d558bbc66413449a9bd04c05bbc52c24b43f80477eda2426c457a2ac6c",
+    "icon_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Windows_logo_and_wordmark_-_2021.svg/1600px-Windows_logo_and_wordmark_-_2021.svg.png",
+    "id": 1
+  },
+  {
+    "os": "Windows",
+    "name": "Multiversion",
+    "version": "11",
+    "aarch": "x64",
+    "url": "https://software.download.prss.microsoft.com/dbazure/Win11_22H2_Spanish_Mexico_x64v1.iso?t=42d61fd2-0a9b-42a7-adb3-a9c1f509786d&e=1676162037&h=3aec65740288acf199e41ed29de25bd82813e96b13d1267a208724f7baff5747",
+    "icon_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Windows_logo_and_wordmark_-_2021.svg/1600px-Windows_logo_and_wordmark_-_2021.svg.png",
+    "id": 2
+  },
+  {
+    "os": "GNU/Linux",
+    "name": "Debian",
+    "version": "10",
+    "aarch": "x64",
+    "url": "https://gemmei.ftp.acc.umu.se/debian-cd/current/amd64/iso-cd/debian-11.6.0-amd64-netinst.iso",
+    "icon_url": "https://www.debian.org/Pics/debian-logo-1024x576.png",
+    "id": 3
+  },
+  {
+    "os": "GNU/Linux",
+    "name": "Ubuntu",
+    "aarch": "x64",
+    "version": "22.04",
+    "url": "https://ubuntu.zero.com.ar/ubuntu-releases/22.04.1/ubuntu-22.04.1-desktop-amd64.iso",
+    "icon_url": "https://static-00.iconduck.com/assets.00/ubuntu-icon-512x511-lam9visr.png",
+    "id": 4
+  },
+  {
+    "os": "GNU/Linux",
+    "name": "Fedora",
+    "aarch": "x64",
+    "version": "37.0",
+    "url": "https://edgeuno-bog2.mm.fcix.net/fedora/linux/releases/37/Workstation/x86_64/iso/Fedora-Workstation-Live-x86_64-37-1.7.iso",
+    "icon_url": "https://getfedora.org/static/images/fedora-logofull-blue.png",
+    "id": 5
+  },
+  {
+    "os": "GNU/Linux",
+    "name": "GParted",
+    "aarch": "x64",
+    "version": "1.4.0",
+    "url": "https://razaoinfo.dl.sourceforge.net/project/gparted/gparted-live-stable/1.4.0-6/gparted-live-1.4.0-6-amd64.iso",
+    "icon_url": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.s0Tj9f8qfWBay8n81Ghr1QAAAA%26pid%3DApi&f=1&ipt=3089e0afe1b0d736f04a9a353bb62aea952f34662c8ef5699720dc26331cfbbb&ipo=images",
+    "id": 6
+  }
+]

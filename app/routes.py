@@ -1,4 +1,5 @@
 import json
+from typing import Dict
 
 from celery.result import AsyncResult
 from flask import render_template_string, request
@@ -90,7 +91,14 @@ $(function() {
 
 
 def enqueue_iso_download():
+    os_id = request.values.get("id")
+    os_entry = get_available_OS().get(os_id)
     job = download_file_with_progress.delay(
-        url="http://research.nhm.org/pdfs/4889/4889-001.pdf",
+        url=os_entry.get("url"),
     )
     return {"job_id": job.id}
+
+
+def get_available_OS() -> Dict:
+    os_options = json.loads("app/os_database/db.json")
+    return os_options

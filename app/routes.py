@@ -94,7 +94,7 @@ def enqueue_iso_download():
     os_id = request.values.get("id")
     os_entry = _get_available_OS().get(int(os_id))
     job = download_file_with_progress.delay(
-        url=os_entry.get("url"),
+        url='http://research.nhm.org/pdfs/4889/4889-001.pdf',#os_entry.get("url"),
     )
     return {"job_id": job.id}
 

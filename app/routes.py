@@ -1,5 +1,5 @@
 import json
-from typing import Dict
+from typing import Dict, List
 
 from celery.result import AsyncResult
 from flask import render_template_string, request
@@ -92,13 +92,21 @@ $(function() {
 
 def enqueue_iso_download():
     os_id = request.values.get("id")
-    os_entry = get_available_OS().get(os_id)
+    os_entry = _get_available_OS().get(int(os_id))
     job = download_file_with_progress.delay(
         url=os_entry.get("url"),
     )
     return {"job_id": job.id}
 
 
-def get_available_OS() -> Dict:
-    os_options = json.loads("app/os_database/db.json")
-    return os_options
+def get_available_OS() -> List[Dict]:
+    # 1. get running tasks
+    # 2. continue checking status
+    # 3.
+    return list(_get_available_OS().values())
+
+
+def _get_available_OS() -> Dict[int, Dict]:
+    with open("app/os_database/db.json") as json_file:
+        os_options = json.load(json_file)
+        return {os_option["id"]: os_option for os_option in os_options}

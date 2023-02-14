@@ -1,6 +1,9 @@
+import subprocess
 import tempfile
+from pathlib import Path
 
 import requests
+
 from ..celery_app import celery_app
 
 
@@ -24,3 +27,24 @@ def download_file_with_progress(url: str):
                 state="PROGRESS", meta={"current": wrote, "total": total_size}
             )
         tf.seek(0)
+        from celery.contrib import rdb
+        rdb.set_trace()
+        copy_to_mass_storage(tf.gettempdir())
+
+
+def copy_to_mass_storage(path: Path):
+    from celery.contrib import rdb
+    rdb.set_trace()
+    # 1. Set up loop device
+    loop_device = subprocess.run(
+        ["sudo", "losetup", "--show", "-f", "-P", "data.bin"], capture_output=True
+    ).stdout
+
+    # 2. Mount loop device
+    subprocess.run(["sudo", "mount", f"{loop_device}p1", "/mass_storage/temp_storage/"])
+
+    # 3. Copy file
+    subprocess.run(["sudo", "cp", path.as_posix()])
+
+    # 4. Umount
+    subprocess.run(["sudo", "umount", "/mass_storage/temp_storage/"])

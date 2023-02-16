@@ -8,7 +8,7 @@ from ..celery_app import celery_app
 
 
 @celery_app.task
-def download_file_with_progress(url: str):
+def download_file_with_progress(url: str, os_id: str):
     r = requests.get(
         url,
         stream=True,
@@ -18,23 +18,25 @@ def download_file_with_progress(url: str):
     block_size = 1024
     wrote = 0
     with tempfile.NamedTemporaryFile(
-        dir="/Users/stormtrooper/Downloads/", suffix=".pdf"
+            dir="/Users/stormtrooper/Downloads/", suffix=".pdf"
     ) as tf:
         for data in r.iter_content(block_size):
             wrote = wrote + len(data)
             tf.write(data)
             celery_app.current_task.update_state(
-                state="PROGRESS", meta={"current": wrote, "total": total_size}
+                state="PROGRESS",
+                meta={
+                    "os_id": os_id,
+                    "current": wrote,
+                    "total": total_size,
+                },
             )
         tf.seek(0)
-        from celery.contrib import rdb
-        rdb.set_trace()
-        copy_to_mass_storage(tf.gettempdir())
+        # shutil.copy2(tf, "/media/mass_storage")
+        # copy_to_mass_storage(tf.gettempdir())
 
 
 def copy_to_mass_storage(path: Path):
-    from celery.contrib import rdb
-    rdb.set_trace()
     # 1. Set up loop device
     loop_device = subprocess.run(
         ["sudo", "losetup", "--show", "-f", "-P", "data.bin"], capture_output=True

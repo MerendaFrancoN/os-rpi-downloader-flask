@@ -1,8 +1,9 @@
 import json
+from itertools import chain
 from typing import Dict, List
 
 from celery.result import AsyncResult
-from flask import render_template_string, request
+from flask import render_template_string, request, Response
 
 from .celery_app import celery_app
 from .tasks import download_file_with_progress
@@ -10,9 +11,7 @@ from .tasks import download_file_with_progress
 
 def index():
     return render_template_string(
-        """\
-<a href="{{ url_for('.enqueue') }}">launch job</a>
-"""
+        """<a href="{{ url_for('.enqueue') }}">launch job</a>"""
     )
 
 
@@ -25,6 +24,7 @@ def progress():
         if job.state == "PROGRESS":
             return json.dumps(
                 dict(
+                    os_id=job.result["os_id"],
                     state=job.state,
                     progress=job.result["current"] * 1.0 / job.result["total"],
                 )
@@ -36,74 +36,35 @@ def progress():
                     progress=1.0,
                 )
             )
-    return "{}"
-
-
-def enqueue():
-    job = download_file_with_progress.delay(
-        url="http://research.nhm.org/pdfs/4889/4889-001.pdf"
-    )
-    return render_template_string(
-        """\
-<style>
-#prog {
-width: 400px;
-border: 1px solid #eee;
-height: 20px;
-}
-#bar {
-width: 0px;
-background-color: #ccc;
-height: 20px;
-}
-</style>
-<h3></h3>
-<div id="prog"><div id="bar"></div></div>
-<div id="pct"></div>
-<script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
-<script>
-function poll() {
-    $.ajax("{{url_for('.progress', jobid=JOBID)}}", {
-        dataType: "json",
-        cache: false,
-        success: function(resp) {
-            console.log(resp);
-            $("#pct").html(resp.progress);
-            $("#bar").css({width: $("#prog").width() * resp.progress});
-            if(resp.progress >= 0.9) {
-                $("#bar").css({backgroundColor: "limegreen"});
-                return;
-            } else {
-                setTimeout(poll, 1000.0);
-            }
-        }
-    });
-}
-$(function() {
-    var JOBID = "{{ JOBID }}";
-    $("h3").html("JOB: " + JOBID);
-    poll();
-});
-</script>
-""",
-        JOBID=job.id,
-    )
+    return Response("{}", status=404, mimetype='application/json')
 
 
 def enqueue_iso_download():
     os_id = request.values.get("id")
     os_entry = _get_available_OS().get(int(os_id))
     job = download_file_with_progress.delay(
-        url='http://research.nhm.org/pdfs/4889/4889-001.pdf',#os_entry.get("url"),
+        url=os_entry.get("url"),
+        os_id=os_id,
     )
     return {"job_id": job.id}
 
 
 def get_available_OS() -> List[Dict]:
-    # 1. get running tasks
-    # 2. continue checking status
-    # 3.
-    return list(_get_available_OS().values())
+    # 1. Get Available OSes
+    available_os = _get_available_OS()
+
+    # 2. Get Running Tasks
+    celery_inspector = celery_app.control.inspect()
+    active_tasks = list(chain.from_iterable(celery_inspector.active().values()))
+    scheduled_tasks = list(chain.from_iterable(celery_inspector.scheduled().values()))
+    current_tasks = list(chain.from_iterable([active_tasks, scheduled_tasks]))
+    for task in current_tasks:
+        job_id = task["id"]
+        os_id = task["kwargs"].get("os_id")
+        if job_id and os_id:
+            available_os[int(os_id)]["job_id"] = job_id
+
+    return list(available_os.values())
 
 
 def _get_available_OS() -> Dict[int, Dict]:

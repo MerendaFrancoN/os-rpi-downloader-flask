@@ -1,6 +1,5 @@
-import subprocess
+import shutil
 import tempfile
-from pathlib import Path
 
 import requests
 
@@ -32,21 +31,4 @@ def download_file_with_progress(url: str, os_id: str):
                 },
             )
         tf.seek(0)
-        # shutil.copy2(tf, "/media/mass_storage")
-        # copy_to_mass_storage(tf.gettempdir())
-
-
-def copy_to_mass_storage(path: Path):
-    # 1. Set up loop device
-    loop_device = subprocess.run(
-        ["sudo", "losetup", "--show", "-f", "-P", "data.bin"], capture_output=True
-    ).stdout
-
-    # 2. Mount loop device
-    subprocess.run(["sudo", "mount", f"{loop_device}p1", "/mass_storage/temp_storage/"])
-
-    # 3. Copy file
-    subprocess.run(["sudo", "cp", path.as_posix()])
-
-    # 4. Umount
-    subprocess.run(["sudo", "umount", "/mass_storage/temp_storage/"])
+        shutil.copy2(tf, "/mass_storage/temp_storage/new_file.pdf")

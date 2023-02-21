@@ -32,12 +32,11 @@ def progress():
         elif job.state == "SUCCESS":
             return json.dumps(
                 dict(
-                    os_id=job.result["os_id"],
                     state=job.state,
                     progress=1.0,
                 )
             )
-    return Response("{}", status=404, mimetype='application/json')
+    return Response("{}", mimetype='application/json')
 
 
 def enqueue_iso_download():

@@ -37,7 +37,7 @@ def progress():
                     progress=1.0,
                 )
             )
-    return Response("{}", mimetype='application/json')
+    return Response("{}", mimetype="application/json")
 
 
 def enqueue_iso_download():
@@ -48,6 +48,11 @@ def enqueue_iso_download():
         os_id=os_id,
     )
     return {"job_id": job.id}
+
+
+def remove_os():
+    os_id = request.values.get("id")
+    os.remove(f"/mass_storage/temp_storage/os_id_{os_id}.iso")
 
 
 def get_available_OS() -> List[Dict]:
@@ -74,13 +79,12 @@ def _get_available_OS() -> Dict[int, Dict]:
         available_os = {os_option["id"]: os_option for os_option in os_options}
         installed_os = _get_installed_OS()
         for os_id, os_value in available_os.items():
-            if os_id in installed_os:
-                available_os[os_id]["is_installed"] = True
-            else:
-                available_os[os_id]["is_installed"] = False
+            available_os[os_id]["is_installed"] = os_id in installed_os
         return available_os
+
+
 def _get_installed_OS() -> Dict[int, str]:
-    path = '/mass_storage/temp_storage'
+    path = "/mass_storage/temp_storage"
     file_list = os.listdir(path)
     os_files = [file_name for file_name in file_list if "os_id" in file_name]
     installed_os_by_id = {

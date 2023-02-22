@@ -7,7 +7,7 @@ from werkzeug.utils import import_string
 
 from .app import create_flask_app
 from .celery_app import celery_app
-from .routes import index, progress, enqueue_iso_download, get_available_OS
+from .routes import index, progress, enqueue_iso_download, get_available_OS, remove_os
 from .utility.celery_util import init_celery
 
 
@@ -35,3 +35,4 @@ app.add_url_rule("/", view_func=index)
 app.add_url_rule("/enqueueISO", view_func=enqueue_iso_download)
 app.add_url_rule("/progress", view_func=progress)
 app.add_url_rule("/availableISOs", view_func=get_available_OS)
+app.add_url_rule("/removeISO", view_func=remove_os)

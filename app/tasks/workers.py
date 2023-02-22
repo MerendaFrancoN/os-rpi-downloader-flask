@@ -17,7 +17,7 @@ def download_file_with_progress(url: str, os_id: str):
     block_size = 1024
     wrote = 0
     with tempfile.NamedTemporaryFile(
-        dir="~/Downloads/", suffix=".iso"
+        dir="/home/pi/Downloads/", suffix=".iso"
     ) as tf:
         for data in r.iter_content(block_size):
             wrote = wrote + len(data)

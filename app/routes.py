@@ -53,6 +53,7 @@ def enqueue_iso_download():
 def remove_os():
     os_id = request.values.get("id")
     os.remove(f"/mass_storage/temp_storage/os_id_{os_id}.iso")
+    return Response(status=200)
 
 
 def get_available_OS() -> List[Dict]:

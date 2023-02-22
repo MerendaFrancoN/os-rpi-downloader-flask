@@ -17,7 +17,7 @@ def download_file_with_progress(url: str, os_id: str):
     block_size = 1024
     wrote = 0
     with tempfile.NamedTemporaryFile(
-            dir="/Users/stormtrooper/Downloads/", suffix=".pdf"
+            dir="/Users/stormtrooper/Downloads/", suffix=".iso"
     ) as tf:
         for data in r.iter_content(block_size):
             wrote = wrote + len(data)
@@ -31,4 +31,4 @@ def download_file_with_progress(url: str, os_id: str):
                 },
             )
         tf.seek(0)
-        shutil.copy2(tf, "/mass_storage/temp_storage/new_file.pdf")
+        shutil.copy(tf.name, f"/mass_storage/temp_storage/os_id_{os_id}.iso")

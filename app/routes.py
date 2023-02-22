@@ -1,4 +1,5 @@
 import json
+import os
 from itertools import chain
 from typing import Dict, List
 
@@ -70,4 +71,19 @@ def get_available_OS() -> List[Dict]:
 def _get_available_OS() -> Dict[int, Dict]:
     with open("app/os_database/db.json") as json_file:
         os_options = json.load(json_file)
-        return {os_option["id"]: os_option for os_option in os_options}
+        available_os = {os_option["id"]: os_option for os_option in os_options}
+        installed_os = _get_installed_OS()
+        for os_id, os_value in available_os.items():
+            if os_id in installed_os:
+                available_os[os_id]["is_installed"] = True
+            else:
+                available_os[os_id]["is_installed"] = False
+        return available_os
+def _get_installed_OS() -> Dict[int, str]:
+    path = '/mass_storage/temp_storage'
+    file_list = os.listdir(path)
+    os_files = [file_name for file_name in file_list if "os_id" in file_name]
+    installed_os_by_id = {
+        int(os_file.split(".")[0].split("_")[-1]): os_file for os_file in os_files
+    }
+    return installed_os_by_id

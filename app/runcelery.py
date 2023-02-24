@@ -3,6 +3,7 @@ import os
 import dotenv
 import flask
 from celery import Celery
+from flask_cors import CORS
 from werkzeug.utils import import_string
 
 from .app import create_flask_app
@@ -29,6 +30,9 @@ CONFIG = _get_config_from_env()
 app = create_flask_app(CONFIG)
 _configure_celery_app(app, celery_app)
 init_celery(app, celery_app)
+# Configure CORS
+CORS(app)
+
 
 
 app.add_url_rule("/", view_func=index)

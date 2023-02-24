@@ -100,7 +100,7 @@ def get_available_OS() -> List[Dict]:
         json.dumps(list(available_os.values())),
          mimetype="application/json"
     )
-    response.headers.add("Access-Control-Allow-Origin", "http://100.83.205.76")
+    response.headers.add("Access-Control-Allow-Origin", "http://177.71.160.225")
     response.headers.add("Content-Type", "application/json; charset=utf-8")
     response.headers.add("Access-Control-Allow-Methods", "GET, POST, PATCH, PUT, DELETE, OPTIONS")
     response.headers.add("Access-Control-Allow-Headers", "Origin, Content-Type, X-Auth-Token")

@@ -42,7 +42,7 @@ def progress():
                     )
                 )
             )
-        response.headers.add("Access-Control-Allow-Origin", "*")
+        response.headers.add("Access-Control-Allow-Origin", "http://177.71.160.225/")
         response.headers.add("Access-Control-Allow-Methods",
                              "GET, POST, PATCH, PUT, DELETE, OPTIONS")
         response.headers.add("Access-Control-Allow-Headers",
@@ -61,7 +61,7 @@ def enqueue_iso_download():
         os_id=os_id,
     )
     response = Response({"job_id": job.id})
-    response.headers.add("Access-Control-Allow-Origin", "*")
+    response.headers.add("Access-Control-Allow-Origin", "http://177.71.160.225/")
     response.headers.add("Access-Control-Allow-Methods",
                          "GET, POST, PATCH, PUT, DELETE, OPTIONS")
     response.headers.add("Access-Control-Allow-Headers",
@@ -73,7 +73,7 @@ def remove_os():
     os_id = request.values.get("id")
     os.remove(f"/mass_storage/temp_storage/os_id_{os_id}.iso")
     response = Response(status=200)
-    response.headers.add("Access-Control-Allow-Origin", "*")
+    response.headers.add("Access-Control-Allow-Origin", "http://177.71.160.225/")
     response.headers.add("Access-Control-Allow-Methods",
                          "GET, POST, PATCH, PUT, DELETE, OPTIONS")
     response.headers.add("Access-Control-Allow-Headers",
@@ -100,7 +100,7 @@ def get_available_OS() -> List[Dict]:
         json.dumps(list(available_os.values())),
          mimetype="application/json"
     )
-    response.headers.add("Access-Control-Allow-Origin", "http://177.71.160.225")
+    response.headers.add("Access-Control-Allow-Origin", "http://177.71.160.225/")
     response.headers.add("Content-Type", "application/json; charset=utf-8")
     response.headers.add("Access-Control-Allow-Methods", "GET, POST, PATCH, PUT, DELETE, OPTIONS")
     response.headers.add("Access-Control-Allow-Headers", "Origin, Content-Type, X-Auth-Token")

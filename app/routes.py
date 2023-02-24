@@ -11,6 +11,7 @@ from .tasks import download_file_with_progress
 
 
 def index():
+
     return render_template_string(
         """<a href="{{ url_for('.enqueue') }}">launch job</a>"""
     )
@@ -23,21 +24,29 @@ def progress():
         # you get "NotImplementedError: No result backend configured"
         job = AsyncResult(jobid, app=celery_app)
         if job.state == "PROGRESS":
-            return json.dumps(
-                dict(
-                    os_id=job.result["os_id"],
-                    state=job.state,
-                    progress=job.result["current"] * 1.0 / job.result["total"],
+            response = Response(
+                json.dumps(
+                    dict(
+                        os_id=job.result["os_id"],
+                        state=job.state,
+                        progress=job.result["current"] * 1.0 / job.result["total"],
+                    )
                 )
             )
         elif job.state == "SUCCESS":
-            return json.dumps(
-                dict(
-                    state=job.state,
-                    progress=1.0,
+            response = Response(
+                json.dumps(
+                    dict(
+                        state=job.state,
+                        progress=1.0,
+                    )
                 )
             )
-    return Response("{}", mimetype="application/json")
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        return response
+
+    response = Response("{}", mimetype="application/json")
+    return response
 
 
 def enqueue_iso_download():
@@ -47,13 +56,18 @@ def enqueue_iso_download():
         url=os_entry.get("url"),
         os_id=os_id,
     )
-    return {"job_id": job.id}
+    response = Response({"job_id": job.id})
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
 
 
 def remove_os():
     os_id = request.values.get("id")
     os.remove(f"/mass_storage/temp_storage/os_id_{os_id}.iso")
-    return Response(status=200)
+    response = Response(status=200)
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
+
 
 
 def get_available_OS() -> List[Dict]:
@@ -70,8 +84,12 @@ def get_available_OS() -> List[Dict]:
         os_id = task["kwargs"].get("os_id")
         if job_id and os_id:
             available_os[int(os_id)]["job_id"] = job_id
-
-    return list(available_os.values())
+    response = Response(
+        str(list(available_os.values()))
+    )
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    response.headers.add("Content-Type", "application/json")
+    return response
 
 
 def _get_available_OS() -> Dict[int, Dict]:
@@ -82,6 +100,7 @@ def _get_available_OS() -> Dict[int, Dict]:
         for os_id, os_value in available_os.items():
             available_os[os_id]["is_installed"] = os_id in installed_os
         return available_os
+
 
 
 def _get_installed_OS() -> Dict[int, str]:

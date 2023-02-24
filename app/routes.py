@@ -85,10 +85,11 @@ def get_available_OS() -> List[Dict]:
         if job_id and os_id:
             available_os[int(os_id)]["job_id"] = job_id
     response = Response(
-        str(list(available_os.values()))
+        json.dumps(list(available_os.values())),
+         mimetype="application/json"
     )
     response.headers.add("Access-Control-Allow-Origin", "*")
-    response.headers.add("Content-Type", "application/json")
+    response.headers.add("Content-Type", "application/json; charset=utf-8")
     return response
 
 

@@ -55,7 +55,7 @@ def enqueue_iso_download():
         url=os_entry.get("url"),
         os_id=os_id,
     )
-    response = Response({"job_id": job.id})
+    response = Response(json.dumps({"job_id": job.id}))
     return response
 
 

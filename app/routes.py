@@ -89,7 +89,8 @@ def get_available_OS() -> Response:
 
 
 def _get_available_OS() -> Dict[int, Dict]:
-    with open("app/os_database/db.json") as json_file:
+    root = os.path.abspath("")
+    with open(f"{root}/app/os_database/db.json") as json_file:
         os_options = json.load(json_file)
         available_os = {os_option["id"]: os_option for os_option in os_options}
         installed_os = _get_installed_OS()

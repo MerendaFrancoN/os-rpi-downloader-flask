@@ -19,6 +19,7 @@ def index():
 
 def progress():
     jobid = request.values.get("jobid")
+    response = Response(json.dumps({}), mimetype="application/json")
     if jobid:
         # GOTCHA: if you don't pass app=celery here,
         # you get "NotImplementedError: No result backend configured"
@@ -44,7 +45,6 @@ def progress():
             )
         return response
 
-    response = Response("{}", mimetype="application/json")
     return response
 
 
@@ -67,7 +67,7 @@ def remove_os():
 
 
 
-def get_available_OS() -> List[Dict]:
+def get_available_OS() -> Response:
     # 1. Get Available OSes
     available_os = _get_available_OS()
 
@@ -83,7 +83,7 @@ def get_available_OS() -> List[Dict]:
             available_os[int(os_id)]["job_id"] = job_id
     response = Response(
         json.dumps(list(available_os.values())),
-         mimetype="application/json"
+        mimetype="application/json"
     )
     return response
 

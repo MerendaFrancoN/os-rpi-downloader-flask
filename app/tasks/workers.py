@@ -7,7 +7,7 @@ from ..celery_app import celery_app
 
 
 @celery_app.task
-def download_file_with_progress(url: str, os_id: str):
+def download_file_with_progress(url: str, os_id: str, filename: str):
     r = requests.get(
         url,
         stream=True,
@@ -31,4 +31,4 @@ def download_file_with_progress(url: str, os_id: str):
                 },
             )
         tf.seek(0)
-        shutil.copy(tf.name, f"/mass_storage/temp_storage/os_id_{os_id}.iso")
+        shutil.copy(tf.name, f"/mass_storage/temp_storage/{filename}")

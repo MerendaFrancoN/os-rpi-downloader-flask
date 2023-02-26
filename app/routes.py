@@ -54,6 +54,7 @@ def enqueue_iso_download():
     job = download_file_with_progress.delay(
         url=os_entry.get("url"),
         os_id=os_id,
+        filename=os_entry.get("filename")
     )
     response = Response(json.dumps({"job_id": job.id}))
     return response
@@ -61,7 +62,8 @@ def enqueue_iso_download():
 
 def remove_os():
     os_id = request.values.get("id")
-    os.remove(f"/mass_storage/temp_storage/os_id_{os_id}.iso")
+    os_entry = _get_available_OS().get(int(os_id))
+    os.remove(f"/mass_storage/temp_storage/{os_entry.get('filename')}")
     response = Response(status=200)
     return response
 
@@ -79,7 +81,8 @@ def get_available_OS() -> Response:
     for task in current_tasks:
         job_id = task["id"]
         os_id = task["kwargs"].get("os_id")
-        if job_id and os_id:
+        is_installing = job_id and os_id
+        if is_installing:
             available_os[int(os_id)]["job_id"] = job_id
     response = Response(
         json.dumps(list(available_os.values())),
@@ -93,18 +96,14 @@ def _get_available_OS() -> Dict[int, Dict]:
     with open(f"{root}/app/os_database/db.json") as json_file:
         os_options = json.load(json_file)
         available_os = {os_option["id"]: os_option for os_option in os_options}
-        installed_os = _get_installed_OS()
         for os_id, os_value in available_os.items():
-            available_os[os_id]["is_installed"] = os_id in installed_os
+            available_os[os_id]["is_installed"] = _is_OS_installed(available_os[os_id]["filename"])
         return available_os
 
 
 
-def _get_installed_OS() -> Dict[int, str]:
+def _is_OS_installed(os_filename: str) -> bool:
     path = "/mass_storage/temp_storage"
     file_list = os.listdir(path)
-    os_files = [file_name for file_name in file_list if "os_id" in file_name]
-    installed_os_by_id = {
-        int(os_file.split(".")[0].split("_")[-1]): os_file for os_file in os_files
-    }
-    return installed_os_by_id
+    os_files = [file_name for file_name in file_list if os_filename == file_name]
+    return bool(os_files)

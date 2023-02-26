@@ -5,7 +5,7 @@
     "version": "10",
     "aarch": "x64",
     "url": "https://software.download.prss.microsoft.com/dbazure/Win10_22H2_English_x64.iso?t=1cd7940a-3c65-412f-94ac-7d6cbab679d9&e=1676086997&h=c18770d558bbc66413449a9bd04c05bbc52c24b43f80477eda2426c457a2ac6c",
-    "icon_url": "https://3.bp.blogspot.com/-s78M7e_VLxg/UEZApsqhx-I/AAAAAAAAAR8/qSMudK18Fxc/s1600/Folders-OS-Windows-8-Metro-icon.png",
+    "icon_url": "https://firebasestorage.googleapis.com/v0/b/keyaid-78a1d.appspot.com/o/os_images%2Fwindows.png?alt=media&token=2eb6d6c4-3297-420d-b23c-4a9ba5b16e33",
     "id": 1
   },
   {
@@ -23,7 +23,7 @@
     "version": "10",
     "aarch": "x64",
     "url": "https://gemmei.ftp.acc.umu.se/debian-cd/current/amd64/iso-cd/debian-11.6.0-amd64-netinst.iso",
-    "icon_url": "https://w7.pngwing.com/pngs/668/952/png-transparent-debian-arch-linux-computer-icons-desktop-linux-spiral-logo-magenta-thumbnail.png",
+    "icon_url": "https://firebasestorage.googleapis.com/v0/b/keyaid-78a1d.appspot.com/o/os_images%2Fdebian.png?alt=media&token=b0560199-beed-491d-99a7-3c7fe86ef895",
     "id": 3
   },
   {
@@ -31,8 +31,8 @@
     "name": "Ubuntu",
     "aarch": "x64",
       "version": "22.04",
-    "url": "https://ubuntu.zero.com.ar/ubuntu-releases/22.04.1/ubuntu-22.04.1-desktop-amd64.iso",
-    "icon_url": "https://static-00.iconduck.com/assets.00/ubuntu-icon-512x511-lam9visr.png",
+    "url": "https://ubuntu.zero.com.ar/ubuntu-releases/22.04.1/ubuntu-22.04.2-desktop-amd64.iso",
+    "icon_url": "https://firebasestorage.googleapis.com/v0/b/keyaid-78a1d.appspot.com/o/os_images%2Fubuntu.png?alt=media&token=728aa79e-d50f-4f02-b191-157fef9800c7",
     "id": 4
   },
   {
@@ -41,7 +41,7 @@
     "aarch": "x64",
     "version": "37.0",
     "url": "https://edgeuno-bog2.mm.fcix.net/fedora/linux/releases/37/Workstation/x86_64/iso/Fedora-Workstation-Live-x86_64-37-1.7.iso",
-    "icon_url": "https://icons.iconarchive.com/icons/papirus-team/papirus-apps/72/distributor-logo-fedora-icon.png",
+    "icon_url": "https://firebasestorage.googleapis.com/v0/b/keyaid-78a1d.appspot.com/o/os_images%2Ffedora.png?alt=media&token=211f10ff-abd0-40b4-9c7f-7bf4c5f12460",
     "id": 5
   },
   {
@@ -50,7 +50,7 @@
     "aarch": "x64",
     "version": "1.4.0",
     "url": "https://razaoinfo.dl.sourceforge.net/project/gparted/gparted-live-stable/1.4.0-6/gparted-live-1.4.0-6-amd64.iso",
-    "icon_url": "https://gparted.org/images/gparted-64x42.png",
+    "icon_url": "https://firebasestorage.googleapis.com/v0/b/keyaid-78a1d.appspot.com/o/os_images%2Fgparted.png?alt=media&token=d72c2959-b32d-403f-91d3-e12651a7a49b",
     "id": 6
   }
 ]
